@@ -16,6 +16,9 @@ const NotefulService = {
       .then(rows => {
         return rows[0];
       });
+  },
+  getAllNotes(knex) {
+    return knex('notes').select('*');
   }
 };
 
