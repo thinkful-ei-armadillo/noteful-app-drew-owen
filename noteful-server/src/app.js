@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
-const resource1Router = require('./resource1/resource1-router');
+const notefulRouter = require('./noteful/noteful-router');
+const logger = require('./logger');
 
 const app = express();
 
@@ -15,24 +16,24 @@ app.use(cors());
 app.use(helmet());
 
 // API_TOKEN VALIDATION - this application stores API_TOKEN= in the .env
-app.use(function validateBearerToken(req, res, next) {
-  const apiToken = process.env.API_TOKEN;
-  const authToken = req.get('Authorization');
+// app.use(function validateBearerToken(req, res, next) {
+//   const apiToken = process.env.API_TOKEN;
+//   const authToken = req.get('Authorization');
 
-  if (!authToken || authToken.split(' ')[1] !== apiToken) {
-    logger.error(`Unauthorized request to path: ${req.path}`);
-    return res.status(401).json({ error: 'Unauthorized request' });
-  }
-  // move to the next middleware
-  next();
-});
+//   if (!authToken || authToken.split(' ')[1] !== apiToken) {
+//     logger.error(`Unauthorized request to path: ${req.path}`);
+//     return res.status(401).json({ error: 'Unauthorized request' });
+//   }
+//   // move to the next middleware
+//   next();
+// });
 
 app.get('/', (req, res) => {
   res.send('Main Page "/"');
 });
 
 //RESOURCE ROUTERS
-app.use(resource1Router);
+app.use(notefulRouter);
 // app.use(resource2Router);
 
 // error handler to send errors
